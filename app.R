@@ -55,7 +55,7 @@ fourgram <- function(fourg){
   
   for(string0 in unigramlist$unigram){
     text = paste(four,string0)
-    found <- fourgramlist[fourgramlist$fourgram==text,]
+    found <- fourgramlist[as.character(fourgramlist$fourgram)==text,]
     n<- as.numeric(found$frequency)
     
     if(length(n)!=0){
@@ -64,8 +64,8 @@ fourgram <- function(fourg){
     }
   }
   if(nrow(foursum)==1) return(NULL)
-  foursum <- foursum[order(-frequency),]
-  sen <- unlist(strsplit(as.String(foursum[1,fourgram]),' '))
+  foursum <- foursum[order(-foursum$frequency),]
+  sen <- unlist(strsplit(as.String(foursum$fourgram[1]),' '))
   return (sen[length(sen)])
 }
 
@@ -73,13 +73,13 @@ trigram <- function(threeg){
   three <- paste(threeg,collapse = ' ')
   three <- tolower(three)
   threesum <- data.frame(trigram = "test",frequency = 0)
-  k <- bigramlist[bigramlist$bigram==three,]
+  k <- bigramlist[as.character(bigramlist$bigram)==three,]
   m <- as.numeric(k$frequency)
   if(length(m)==0) return(NULL)
   
   for(string0 in unigramlist$unigram){
     text = paste(three,string0)
-    found <- trigramlist[trigramlist$trigram==text,]
+    found <- trigramlist[as.character(trigramlist$trigram)==text,]
     n<- as.numeric(found$frequency)
     
     if(length(n)!=0){
@@ -88,8 +88,8 @@ trigram <- function(threeg){
     }
   }
   if(nrow(threesum)==1) return(NULL)
-  threesum <- threesum[order(-frequency),]
-  sen <- unlist(strsplit(as.String(threesum[1,trigram]),' '))
+  threesum <- threesum[order(-threesum$frequency),]
+  sen <- unlist(strsplit(as.String(threesum$trigram[1]),' '))
   return (sen[length(sen)])
 }
 
@@ -103,7 +103,7 @@ bigram <- function(twog){
   
   for(string0 in unigramlist$unigram){
     text = paste(two,string0)
-    found <- bigramlist[bigramlist$bigram==text,]
+    found <- bigramlist[as.character(bigramlist$bigram)==text,]
     n<- as.numeric(found$frequency)
     
     if(length(n)!=0){
@@ -113,8 +113,8 @@ bigram <- function(twog){
   }
 
   if(nrow(twosum)==1) return(NULL)
-  twosum <- twosum[order(-frequency),]
-  sen <- unlist(strsplit(as.String(twosum[1,bigram]),' '))
+  twosum <- twosum[order(-twosum$frequency),]
+  sen <- unlist(strsplit(as.String(twosum$bigram[1]),' '))
   return (sen[length(sen)])
 }
   
@@ -133,6 +133,7 @@ unigram <- function(oneg){
     }
   }
   
+  if(nrow(onesum)==1) return(NULL)
   onesum <- onesum[order(-onesum$frequency),]
   sen <- unlist(strsplit(as.String(onesum$bigram[1]),' '))
   return (sen[length(sen)])
